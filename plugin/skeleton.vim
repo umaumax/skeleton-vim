@@ -19,7 +19,7 @@ let s:template_map = {}
 for s:file in skeleton#ls(s:template_dir)
 	let s:ext = fnamemodify(s:file, ':e')
 	if !has_key(s:template_map, s:ext)
-		let s:template_map[s:ext] = []
+		let s:template_map[s:ext] = ['empty file']
 	endif
 	call add(s:template_map[s:ext], s:file)
 endfor
@@ -28,13 +28,17 @@ let s:key = expand("%:e")
 "for s:key in keys(s:template_map)
 if has_key(s:template_map, s:key)
 	let s:files = s:template_map[s:key]
-	if len(s:files) == 1
-		let s:file = s:files[0]
-		execute "autocmd BufNewFile *." . s:key . " 0r " . s:template_dir . s:file
-	else
+	if len(s:files) > 1
+		" 	if len(s:files) == 1
+		" 		let s:file = s:files[0]
+		" 		execute "autocmd BufNewFile *." . s:key . " 0r " . s:template_dir . s:file
+		" 	else
 		let s:index = skeleton#dialog("Please choose template file!", s:files)
-		let s:file = s:files[s:index]
-		execute "autocmd BufNewFile *." . s:key . " 0r " . s:template_dir . s:file
+		if s:index != 0
+			let s:file = s:files[s:index]
+			execute "autocmd BufNewFile *." . s:key . " 0r " . s:template_dir . s:file
+		endif
+		" 	endif
 	endif
 endif
 "endfor
