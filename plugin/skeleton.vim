@@ -4,7 +4,7 @@ endif
 let g:loaded_skeleton = 1
 
 let s:file_size = getfsize(expand(@%))
-if s:file_size > 0
+if s:file_size != 0
 	finish
 endif
 
